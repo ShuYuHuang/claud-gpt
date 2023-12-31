@@ -12,9 +12,9 @@ app = FastAPI()
 
 @app.post("/chat/complete")
 def read_item(text: str=Form(...)):
-    response = anthropic.completions.create(
+    comp = anthropic.completions.create(
         model="claude-2.1",
         max_tokens_to_sample=300,
         prompt=f"{HUMAN_PROMPT} {text}{AI_PROMPT}",
     )
-    return {"messages":response.completions}
+    return {"messages":comp.completion}

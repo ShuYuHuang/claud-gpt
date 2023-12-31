@@ -1,14 +1,19 @@
+from os import environ
 from typing import Optional
+from fastapi import FastAPI, Form
+from anthropic import Anthropic, HUMAN_PROMPT, AI_PROMPT
 
-from fastapi import FastAPI
+anthropic = Anthropic(
+   # defaults to os.environ.get("ANTHROPIC_API_KEY")
+)
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+@app.post("/chat/complete")
+def read_item(text: str=Form(...)):
+    response = anthropic.completions.create(
+        model="claude-2.1",
+        max_tokens_to_sample=300,
+        prompt=f"{HUMAN_PROMPT} {text}{AI_PROMPT}",
+    )
+    return {"messages":response.completions}

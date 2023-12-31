@@ -1,10 +1,11 @@
-from os import environ
+import os
 from typing import Optional
 from fastapi import FastAPI, Form
 from anthropic import Anthropic, HUMAN_PROMPT, AI_PROMPT
 
 anthropic = Anthropic(
-   # defaults to os.environ.get("ANTHROPIC_API_KEY")
+   # defaults to 
+    api_key=os.environ.get("ANTHROPIC_API_KEY")
 )
 
 app = FastAPI()
